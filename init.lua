@@ -1,9 +1,11 @@
 -- Experimental
-vim.opt.lazyredraw = true -- Avoid redrawing during macro execution
+vim.opt.lazyredraw = false
 vim.opt.synmaxcol = 200 -- Limit syntax highlighting column
 vim.opt.updatetime = 300 -- Reduce update time for plugins like LSP
 vim.opt.cursorline = false -- Disable cursorline for large files
-vim.lsp.set_log_level 'OFF'
+
+-- cursor
+vim.o.guicursor = 'n-v-c-sm-ve:block,' .. 'i-ci:ver25,' .. 'r-cr-o:hor20,' .. 'a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor'
 
 vim.o.exrc = true
 vim.o.secure = true

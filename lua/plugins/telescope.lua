@@ -19,7 +19,7 @@ return {
       end,
     },
     { 'nvim-telescope/telescope-ui-select.nvim' },
-    { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
   },
   config = function()
     require('telescope').setup {
@@ -36,9 +36,16 @@ return {
             '--glob=!**/__pycache__/*',
             '--glob=!**/.idea/*',
             '--glob=!**/.vscode/*',
+            '--glob=!**/tmp/*',
+            '--glob=!**/temp/*',
             '--glob=!**/dist/*',
+            '--glob=!**/.next/*',
+            '--glob=!**/.turbo/*',
+            '--glob=!**/node_modules/*',
             '--glob=!**/yarn.lock',
+            '--glob=!**/pnpm-lock.yaml',
             '--glob=!**/package-lock.json',
+            '--no-ignore-vcs',
           },
         },
       },
@@ -46,13 +53,14 @@ return {
         -- configure to use ripgrep
         vimgrep_arguments = {
           'rg',
-          '--follow', -- Follow symbolic links
-          '--hidden', -- Search for hidden files
-          '--no-heading', -- Don't group matches by each file
+          '--follow',        -- Follow symbolic links
+          '--hidden',        -- Search for hidden files
+          '--no-heading',    -- Don't group matches by each file
           '--with-filename', -- Print the file path with the matched lines
-          '--line-number', -- Show line numbers
-          '--column', -- Show column numbers
-          '--smart-case', -- Smart case search
+          '--line-number',   -- Show line numbers
+          '--column',        -- Show column numbers
+          '--smart-case',    -- Smart case search
+          '--no-ignore-vcs',
 
           -- Exclude some patterns from search
           '--glob=!**/.git/*',
@@ -60,8 +68,14 @@ return {
           '--glob=!**/__pycache__/*',
           '--glob=!**/.vscode/*',
           '--glob=!**/build/*',
+          '--glob=!**/tmp/*',
+          '--glob=!**/temp/*',
           '--glob=!**/dist/*',
+          '--glob=!**/.next/*',
+          '--glob=!**/.turbo/*',
+          '--glob=!**/node_modules/*',
           '--glob=!**/yarn.lock',
+          '--glob=!**/pnpm-lock.yaml',
           '--glob=!**/package-lock.json',
         },
       },
@@ -87,7 +101,47 @@ return {
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+    -- NOTE: Buffer finder telescope
+    -- local action_state = require 'telescope.actions.state'
+    -- local actions = require 'telescope.actions'
+    --
+    -- buffer_searcher = function()
+    --   builtin.buffers {
+    --     sort_mru = true,
+    --     ignore_current_buffer = true,
+    --     show_all_buffers = false,
+    --     attach_mappings = function(prompt_bufnr, map)
+    --       local refresh_buffer_searcher = function()
+    --         actions.close(prompt_bufnr)
+    --         vim.schedule(buffer_searcher)
+    --       end
+    --
+    --       local delete_buf = function()
+    --         local selection = action_state.get_selected_entry()
+    --         vim.api.nvim_buf_delete(selection.bufnr, { force = true })
+    --         refresh_buffer_searcher()
+    --       end
+    --
+    --       local delete_multiple_buf = function()
+    --         local picker = action_state.get_current_picker(prompt_bufnr)
+    --         local selection = picker:get_multi_selection()
+    --         for _, entry in ipairs(selection) do
+    --           vim.api.nvim_buf_delete(entry.bufnr, { force = true })
+    --         end
+    --         refresh_buffer_searcher()
+    --       end
+    --
+    --       map('n', 'dd', delete_buf)
+    --       map('n', '<C-d>', delete_multiple_buf)
+    --       map('i', '<C-d>', delete_multiple_buf)
+    --
+    --       return true
+    --     end,
+    --   }
+    -- end
+    --
+    -- vim.keymap.set('n', '<leader><leader>', buffer_searcher, { desc = '[ ] Find existing buffers' })
 
     -- It's also possible to pass additional configuration options.
     --  See `:help telescope.builtin.live_grep()` for information about particular keys

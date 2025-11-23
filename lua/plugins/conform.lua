@@ -1,19 +1,20 @@
-return { -- Autoformat
+return {
+  -- Autoformat
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
   cmd = { 'ConformInfo' },
   keys = {
     {
-      '<leader>f',
+      '<leader>cf',
       function()
         require('conform').format { async = true, lsp_format = 'fallback' }
       end,
       mode = '',
-      desc = '[F]ormat buffer',
+      desc = '[C]ode [F]ormat',
     },
   },
   opts = {
-    notify_on_error = false,
+    notify_on_error = true,
     format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
@@ -26,7 +27,7 @@ return { -- Autoformat
         lsp_format_opt = 'fallback'
       end
       return {
-        timeout_ms = 500,
+        timeout_ms = 1000,
         lsp_format = lsp_format_opt,
       }
     end,
@@ -34,15 +35,26 @@ return { -- Autoformat
       lua = { 'stylua' },
       go = { 'goimports', 'gofumpt', 'golines' },
       c = { 'clang_format' },
-      css = { 'biome' },
-      json = { 'biome', stop_after_first = true },
-      javascript = { 'biome' },
-      typescript = { 'biome' },
-      typescriptreact = { 'biome' },
+      ['javascript'] = { 'biome-check' },
+      ['javascriptreact'] = { 'biome-check' },
+      ['typescript'] = { 'biome-check' },
+      ['typescriptreact'] = { 'biome-check' },
+      ['json'] = { 'biome-check' },
+      ['css'] = { 'prettier' },
+      yaml = { 'prettier' },
+      yml = { 'prettier' },
       sql = { 'sql_formatter' },
-      svelte = { 'prettierd' },
-      vue = { 'prettierd' },
-      -- html = { 'prettier', 'templ' },
+      nginx = { 'nginxfmt' },
+    },
+    formatters = {
+      golines = {
+        command = 'golines',
+        args = {
+          '-m',
+          '120',
+          '--shorten-comments',
+        },
+      },
     },
   },
 }

@@ -14,9 +14,9 @@ return {
         button = '',
         -- Enables / disables diagnostic symbols
         diagnostics = {
-          [vim.diagnostic.severity.ERROR] = { enabled = true, icon = 'ﬀ' },
-          [vim.diagnostic.severity.WARN] = { enabled = false },
-          [vim.diagnostic.severity.INFO] = { enabled = false },
+          [vim.diagnostic.severity.ERROR] = { enabled = true },
+          [vim.diagnostic.severity.WARN] = { enabled = true },
+          [vim.diagnostic.severity.INFO] = { enabled = true },
           [vim.diagnostic.severity.HINT] = { enabled = true },
         },
         gitsigns = {
@@ -35,7 +35,7 @@ return {
         separator = { left = '▎', right = '' },
 
         -- If true, add an additional separator at the end of the buffer list
-        -- separator_at_end = true,
+        separator_at_end = false,
 
         -- Configure the icons on the bufferline when modified or pinned.
         -- Supports all the base icon options.
@@ -53,10 +53,6 @@ return {
         visible = { modified = { buffer_number = false } },
       },
     }
-    -- hi BufferTabpageFill guibg=red
-    vim.cmd [[
-      highlight BufferTabpageFill guibg=#00000
-    ]]
 
     local map = vim.api.nvim_set_keymap
     local opts = { noremap = true, silent = true }

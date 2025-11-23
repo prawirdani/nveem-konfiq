@@ -1,5 +1,4 @@
 return {
-  -- add luasnip
   {
     'L3MON4D3/LuaSnip',
     lazy = true,
@@ -71,6 +70,9 @@ return {
       snippets = {
         preset = 'luasnip',
       },
+
+      -- Shows a signature help window while you type arguments for a function
+      -- signature = { enabled = true },
     },
     opts_extend = { 'sources.default' },
   },
