@@ -260,6 +260,12 @@ return {
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
+          -- tsc cannot publish diagnostics for unopened files; pull them so the
+          -- file tree can show project errors. See lua/ts-project-diagnostics.lua
+          if client and client.name == 'tsc' then
+            require('ts-project-diagnostics').setup(client)
+          end
+
           -- Inlay hints
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             map('<leader>th', function()
