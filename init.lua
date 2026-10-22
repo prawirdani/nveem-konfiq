@@ -60,7 +60,7 @@ vim.opt.smartcase = true
 -- vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 150
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -129,6 +129,11 @@ vim.diagnostic.config {
     end,
   },
 }
+
+-- [[ Disable unused providers (skip host probes at startup) ]]
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 
 -- [[ Disable netrw (neo-tree handles the filesystem) ]]
 vim.g.loaded_netrw = 1
