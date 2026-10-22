@@ -41,6 +41,7 @@ return {
       ['typescriptreact'] = { 'biome-check' },
       ['json'] = { 'biome-check' },
       ['css'] = { 'prettier' },
+      ['html'] = { 'prettier' },
       yaml = { 'prettier' },
       yml = { 'prettier' },
       sql = { 'sql_formatter' },

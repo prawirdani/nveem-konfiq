@@ -21,27 +21,16 @@ return {
       })
 
       local servers = {
-        vtsls = {
+        -- TypeScript 7 native language server (`tsc --lsp --stdio`).
+        -- Requires the `tsc` mason package (npm typescript >= 7); nvim-lspconfig
+        -- supplies cmd/root_dir/filetypes defaults.
+        -- NOTE: reads settings from the `js/ts` section only. `vtsls.*` and
+        -- `typescript.tsserver.*` options are v6-only and ignored here.
+        -- No tsserver plugins (Volar/Svelte/Astro) support TS7 yet -> keep vtsls
+        -- + typescript@6 for those projects.
+        tsc = {
           settings = {
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                completion = {
-                  -- PERFORMANCE: Fuzzy Match
-                  enableServerSideFuzzyMatch = true,
-                  -- PERFORMANCE: Limit completion entries
-                  entriesLimit = 15,
-                },
-                -- PERFORMANCE: Limit inlay hint length to prevent lag
-                maxInlayHintLength = 20,
-              },
-            },
-            typescript = {
-              tsserver = {
-                -- PERFORMANCE: Increase memory limit for large monorepos (default: 3072)
-                maxTsServerMemory = 10240,
-              },
+            ['js/ts'] = {
               preferences = {
                 includeCompletionsForModuleExports = true,
                 includeCompletionsForImportStatements = true,
@@ -59,10 +48,6 @@ return {
                 propertyDeclarationTypes = { enabled = false },
                 functionLikeReturnTypes = { enabled = false },
                 enumMemberValues = { enabled = false },
-              },
-              -- PERFORMANCE: Disable surveys and telemetry
-              surveys = {
-                enabled = false,
               },
             },
           },
@@ -90,6 +75,10 @@ return {
         },
 
         gopls = {
+          root_markers = {
+            'go.work',
+            'go.mod',
+          },
           settings = {
             gopls = {
               gofumpt = true,
@@ -188,8 +177,8 @@ return {
         automatic_enable = {
           -- Manual lsp start
           exclude = {
+            'vtsls',
             'tailwindcss',
-            'emmet_language_server',
           },
         },
       }

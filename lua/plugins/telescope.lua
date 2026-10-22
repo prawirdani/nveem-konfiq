@@ -19,7 +19,7 @@ return {
       end,
     },
     { 'nvim-telescope/telescope-ui-select.nvim' },
-    { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+    { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
   },
   config = function()
     require('telescope').setup {
@@ -53,13 +53,13 @@ return {
         -- configure to use ripgrep
         vimgrep_arguments = {
           'rg',
-          '--follow',        -- Follow symbolic links
-          '--hidden',        -- Search for hidden files
-          '--no-heading',    -- Don't group matches by each file
+          '--follow', -- Follow symbolic links
+          '--hidden', -- Search for hidden files
+          '--no-heading', -- Don't group matches by each file
           '--with-filename', -- Print the file path with the matched lines
-          '--line-number',   -- Show line numbers
-          '--column',        -- Show column numbers
-          '--smart-case',    -- Smart case search
+          '--line-number', -- Show line numbers
+          '--column', -- Show column numbers
+          '--smart-case', -- Smart case search
           '--no-ignore-vcs',
 
           -- Exclude some patterns from search
@@ -71,6 +71,7 @@ return {
           '--glob=!**/tmp/*',
           '--glob=!**/temp/*',
           '--glob=!**/dist/*',
+          '--glob=!**/.output/*',
           '--glob=!**/.next/*',
           '--glob=!**/.turbo/*',
           '--glob=!**/node_modules/*',
