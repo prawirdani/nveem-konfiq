@@ -26,9 +26,9 @@ return {
       else
         lsp_format_opt = 'fallback'
       end
+      -- format_on_save cannot be async: conform must finish before the write.
       return {
         timeout_ms = 1000,
-        async = true,
         lsp_format = lsp_format_opt,
       }
     end,
