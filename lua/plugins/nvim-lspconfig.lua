@@ -11,6 +11,12 @@ return {
       -- Setup capabilities
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
+      -- blink.cmp does not inject its own capabilities; merge them so LSP
+      -- completions get resolve/snippet-edit support.
+      local ok, blink = pcall(require, 'blink.cmp')
+      if ok then
+        capabilities = blink.get_lsp_capabilities(capabilities, true)
+      end
 
       -- Configure LSP servers using vim.lsp.config (Neovim 0.11+ native API)
       -- This is the modern way to configure LSP servers
@@ -26,8 +32,7 @@ return {
         -- supplies cmd/root_dir/filetypes defaults.
         -- NOTE: reads settings from the `js/ts` section only. `vtsls.*` and
         -- `typescript.tsserver.*` options are v6-only and ignored here.
-        -- No tsserver plugins (Volar/Svelte/Astro) support TS7 yet -> keep vtsls
-        -- + typescript@6 for those projects.
+        -- No tsserver plugins (Volar/Svelte/Astro) support TS7 yet.
         tsc = {
           settings = {
             ['js/ts'] = {
@@ -53,8 +58,6 @@ return {
           },
         },
         tailwindcss = {
-          -- exclude a filetype from the default_config
-          filetypes_exclude = { 'markdown' },
           settings = {
             tailwindCSS = {
               experimental = {
@@ -154,7 +157,6 @@ return {
 
       local formatters = {
         'stylua',
-        'goimports',
         'gofumpt',
         'golines',
         'clang-format',
@@ -174,13 +176,7 @@ return {
       -- Setup mason-lspconfig v2 (only LSP servers, no formatters!)
       require('mason-lspconfig').setup {
         ensure_installed = lsp_servers, -- Only LSP servers here
-        automatic_enable = {
-          -- Manual lsp start
-          exclude = {
-            'vtsls',
-            'tailwindcss',
-          },
-        },
+        automatic_enable = true,
       }
 
       -- LSP Attach Handler
@@ -213,32 +209,7 @@ return {
             vim.diagnostic.jump { forward = true, float = true, count = 1 }
           end, '[C]ode [E]rror')
 
-          -- Diagnostic Config
-          vim.diagnostic.config {
-            severity_sort = true,
-            float = {
-              border = 'rounded',
-              source = 'if_many',
-            },
-            underline = {
-              severity = vim.diagnostic.severity.ERROR,
-            },
-            signs = vim.g.have_nerd_font and {
-              text = {
-                [vim.diagnostic.severity.ERROR] = '󰅚 ',
-                [vim.diagnostic.severity.WARN] = '󰀪 ',
-                [vim.diagnostic.severity.INFO] = '󰋽 ',
-                [vim.diagnostic.severity.HINT] = '󰌶 ',
-              },
-            } or {},
-            virtual_text = {
-              source = 'if_many',
-              spacing = 2,
-              format = function(diagnostic)
-                return diagnostic.message
-              end,
-            },
-          }
+          -- Diagnostic Config: see init.lua
 
           -- Helper function for version compatibility
           ---@param client vim.lsp.Client

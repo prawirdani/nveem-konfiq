@@ -1,14 +1,11 @@
 -- Experimental
 vim.opt.lazyredraw = false
-vim.opt.synmaxcol = 200 -- Limit syntax highlighting column
-vim.opt.updatetime = 300 -- Reduce update time for plugins like LSP
 vim.opt.cursorline = false -- Disable cursorline for large files
 
 -- cursor
 vim.o.guicursor = 'n-v-c-sm-ve:block,' .. 'i-ci:ver25,' .. 'r-cr-o:hor20,' .. 'a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor'
 
 vim.o.exrc = true
-vim.o.secure = true
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -22,15 +19,12 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.o.signcolumn = 'yes'
-vim.o.numberwidth = 1
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
--- Sync clipboard between OS and Neovi.
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+-- Sync clipboard between OS and Neovim
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -108,14 +102,37 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- [[ Basic Autocommands ]]
--- Highlight when yanking (copying) text
-vim.api.nvim_create_autocmd('TextYankPost', {
-  pattern = '*',
-  callback = function()
-    local reg_content = vim.fn.getreg '"'
-    vim.fn.system('xclip -selection clipboard', reg_content)
-  end,
-})
+
+-- [[ Diagnostics ]]
+vim.diagnostic.config {
+  severity_sort = true,
+  float = {
+    border = 'rounded',
+    source = 'if_many',
+  },
+  underline = {
+    severity = vim.diagnostic.severity.ERROR,
+  },
+  signs = vim.g.have_nerd_font and {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '󰅚 ',
+      [vim.diagnostic.severity.WARN] = '󰀪 ',
+      [vim.diagnostic.severity.INFO] = '󰋽 ',
+      [vim.diagnostic.severity.HINT] = '󰌶 ',
+    },
+  } or {},
+  virtual_text = {
+    source = 'if_many',
+    spacing = 2,
+    format = function(diagnostic)
+      return diagnostic.message
+    end,
+  },
+}
+
+-- [[ Disable netrw (neo-tree handles the filesystem) ]]
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'

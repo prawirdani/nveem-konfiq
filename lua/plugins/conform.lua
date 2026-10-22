@@ -28,13 +28,15 @@ return {
       end
       return {
         timeout_ms = 1000,
+        async = true,
         lsp_format = lsp_format_opt,
       }
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
-      go = { 'goimports', 'gofumpt', 'golines' },
+      go = { 'gofumpt', 'golines' },
       c = { 'clang_format' },
+      cpp = { 'clang_format' },
       ['javascript'] = { 'biome-check' },
       ['javascriptreact'] = { 'biome-check' },
       ['typescript'] = { 'biome-check' },

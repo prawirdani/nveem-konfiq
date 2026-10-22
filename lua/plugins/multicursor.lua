@@ -9,10 +9,11 @@ return {
       local set = vim.keymap.set
 
       -- Add or skip cursor above/below the main cursor.
-      set({ 'n', 'x' }, '<C-k>', function()
+      -- NOTE: <C-j>/<C-k> stay reserved for window/tmux navigation.
+      set({ 'n', 'x' }, '<up>', function()
         mc.lineAddCursor(-1)
       end)
-      set({ 'n', 'x' }, '<C-j>', function()
+      set({ 'n', 'x' }, '<down>', function()
         mc.lineAddCursor(1)
       end)
       set({ 'n', 'x' }, '<leader><up>', function()
@@ -26,7 +27,7 @@ return {
       set({ 'n', 'x' }, '<C-n>', function()
         mc.matchAddCursor(1)
       end)
-      set({ 'n', 'x' }, '<leader>s', function()
+      set({ 'n', 'x' }, '<leader>a', function()
         mc.matchSkipCursor(1)
       end)
       set({ 'n', 'x' }, '<leader>N', function()
