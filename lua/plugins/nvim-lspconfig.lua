@@ -57,7 +57,35 @@ return {
             },
           },
         },
+        -- Manual start only, see `automatic_enable` below: `:LspStart vtsls`.
+        -- Use for projects with tsserver plugins (Volar/Svelte/Astro): TS7 `tsc`
+        -- has no plugin support. Do not run together with `tsc` on the same buffer.
+        vtsls = {
+          settings = {
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                completion = {
+                  -- PERFORMANCE: Fuzzy Match
+                  enableServerSideFuzzyMatch = true,
+                  -- PERFORMANCE: Limit completion entries
+                  entriesLimit = 15,
+                },
+                -- PERFORMANCE: Limit inlay hint length to prevent lag
+                maxInlayHintLength = 20,
+              },
+            },
+            typescript = {
+              tsserver = {
+                -- PERFORMANCE: Increase memory limit for large monorepos (default: 3072)
+                maxTsServerMemory = 10240,
+              },
+            },
+          },
+        },
         tailwindcss = {
+          -- Manual start only, see `automatic_enable` below: `:LspStart tailwindcss`
           settings = {
             tailwindCSS = {
               experimental = {
@@ -176,7 +204,13 @@ return {
       -- Setup mason-lspconfig v2 (only LSP servers, no formatters!)
       require('mason-lspconfig').setup {
         ensure_installed = lsp_servers, -- Only LSP servers here
-        automatic_enable = true,
+        automatic_enable = {
+          -- Manual start only: `:LspStart <server>` (or `:LspInfo` to inspect)
+          exclude = {
+            'vtsls',
+            'tailwindcss',
+          },
+        },
       }
 
       -- LSP Attach Handler
